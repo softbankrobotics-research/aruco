@@ -1,12 +1,11 @@
-ArUco: One library to rule them all
--------------------------------------------------------------------
+# ArUco: One library to rule them all ![version](https://img.shields.io/badge/version-2.0.19-blue.svg)
 
 ArUco is an easy-to-use C++ library for detection of squared planar markers based on OpenCv. It can detect markers from a variety of ditionaries ARUCO, APRILTAGS, ARTAG and ARTOOLKIT+.
 It is a library, to rule them all ;)
 
-CONTACT: Rafael Munoz-Salinas: rmsalinas@uco.es 
+__CONTACT: Rafael Munoz-Salinas: rmsalinas@uco.es__ 
 
-\section INTRODUCTION
+## INTRODUCTION
 
 The library allows to detect squared planar markers in images. A   marker is a squared element with a black border and a inner binary code inside. The set of valid codes is called dictionary. Several libraries have been proposed, and each one usually includes its own dictionary of valid markers. This version of Aruco allows to use the most famous dictionaries: ARUCO,APRILTAGS,ARTAG and ARTOOLKIT+.
 
@@ -22,7 +21,7 @@ Additionally, marker maps can also extend to much larger environments. Imagine y
 
 For additional information to this README file, please visit our web page : http://www.uco.es/investiga/grupos/ava/node/26
 
-\section What's new in 2.x and how to port
+## What's new in 2.x and how to port
 
 See Changelog for a more detailed description
 
@@ -45,7 +44,7 @@ Also important, from this moment, the axis point in the same direction as given 
 
 With respect to performance, we have improved in several aspects. First, all markers are now analized in parallel (if omp is enabled/found at compile time). Second, we have added a pyramid method for marker detection. Once detected rectangles in the first level, we create the canonical image in the pyramid level that achieves the best trade-off between quality and size. So, the call to wrap function is now more constant. So, you'll not notice decrease in performance as you approach a marker and it becomes bigger.
 
-\section COMPILING
+## COMPILING
 
 Use cmake.
 
@@ -59,36 +58,36 @@ To consider:
 	-DUSE_OWN_EIGEN3=ON/OFF  : We need the eigen3 library. So we have a copy of it in 3drparty. However, if you prefer to use yours, set this parameter to OFF
 	-USE_DOUBLE_PRECISION_PNP=ON/OFF  The classes MarkerPoseTracker and   MarkerMapPoseTracker uses an optimization technique to estiamte the pose. By default we use double, but you can disable this option and float will be used instead.
 
-\section TESTING
+## TESTING
 
 	Download the aruco test data from sourceforge and run the examples in the utils_xxx folders
 	
-\section LIBRARY DESCRIPTION:
+## LIBRARY DESCRIPTION:
 
 The ArUco library contents are divided in several  directories. 
 
-src/: contains the library
-3rdparty/: contains the external code required. Currently only eigen3 is in it. If you prefer using your own eigen3 see in COMPILING section
-utils/: utils for detection of individual markers.
-utils_markermap: utils for using markermaps
-utils_calibration: camera calibration utils. We provide a chessboard-like calibration board. You do need to see complete to do calibration so it is much better!
-utils_gl: examples on how to use the library with OpenGL
+* src/: contains the library
+* 3rdparty/: contains the external code required. Currently only eigen3 is in it. If you prefer using your own eigen3 see in COMPILING section
+* utils/: utils for detection of individual markers.
+* utils_markermap: utils for using markermaps
+* utils_calibration: camera calibration utils. We provide a chessboard-like calibration board. You do need to see complete to do calibration so it is much better!
+* utils_gl: examples on how to use the library with OpenGL
 
 
 
 The library main classes are:
 
-   - aruco::Marker: which represent a marker detected in the image
-   - aruco::MarkerDetector: that is in charge of deteting the markers in a image Detection is done by simple calling the member funcion ArMarkerDetector::detect(). You can select the dictionary you want to use calling 
+   * aruco::Marker: which represent a marker detected in the image
+   * aruco::MarkerDetector: that is in charge of deteting the markers in a image Detection is done by simple calling the member funcion ArMarkerDetector::detect(). You can select the dictionary you want to use calling 
 		ArMarkerDetector::setDictionary(). (see programs in utils)
-   - aruco::MarkerPoseTracker: tracks the pose of the camera wrt to a marker. Instead of recalculating the pose everytime from scratch, the tracker takes advantage of knowing the previous location to refine the current location. This is specially useful when the ambiguity problem arises. The ambiguity problem refers to the fact that some times there are more than one valid poses for the given view. In that cases, the pose returned by the estimator is any of them. However, using the tracker you can avoid this problem in many cases. See utils/aruco_tracker.cpp for an example.
+   * aruco::MarkerPoseTracker: tracks the pose of the camera wrt to a marker. Instead of recalculating the pose everytime from scratch, the tracker takes advantage of knowing the previous location to refine the current location. This is specially useful when the ambiguity problem arises. The ambiguity problem refers to the fact that some times there are more than one valid poses for the given view. In that cases, the pose returned by the estimator is any of them. However, using the tracker you can avoid this problem in many cases. See utils/aruco_tracker.cpp for an example.
 
-   - aruco::MarkerMap: represents a set of markers whose location is known wrt to each other. (see programs in utils_markermap)
-   - aruco::MarkerMapPoseTracker: is the class employed to estimate the pose of the camera wrt the set of markers.
-   - aruco::CvDrawingUtils: a class with some routines for drawing in opencv images
+   * aruco::MarkerMap: represents a set of markers whose location is known wrt to each other. (see programs in utils_markermap)
+   * aruco::MarkerMapPoseTracker: is the class employed to estimate the pose of the camera wrt the set of markers.
+   * aruco::CvDrawingUtils: a class with some routines for drawing in opencv images
 
 
-\subsection Marker Maps
+### Marker Maps
 
 Marker maps exteds the concept of Board in the previous version of the library
 
@@ -102,41 +101,39 @@ However, for the case of the robot previouly explained, it is not known 3D the l
 
 
 
-\subsection APPLICATIONS
+### APPLICATIONS
 
-- The library comes with several applications that will help you to learn how to use the library:
- -# utils/aruco_print_marker: which creates marker and saves it in a jpg file you can print.
- -# utils/aruco_print_dictionary: saves to a dictionary all the markers of the dictionary indicated(ARUCO,APRILTAGS,ARTOOLKIT+,etc).
- -# utils/aruco_print_dictionary: saves to a dictionary all the markers of the dictionary indicated(ARUCO,APRILTAGS,ARTOOLKIT+,etc).
- -# utils/aruco_simple : simple test aplication that detects the markers in an image
- -# utils/aruco_test: this is the main application for detection. It reads images either from the camera of from a video and detect markers. Additionally, if you provide the intrinsics of the camera(obtained by OpenCv calibration) and the size of the marker in meters, the library calculates the marker intrinsics so that you can easily create your AR applications.
- -# utils/aruco_tracker: example showing how to use the tracker. 
-
-
- -# utils_markermap/aruco_create_markermap: creation of simple marker maps (the old boards). It creates a grid of markers that can be printed in a piece of paper.
+The library comes with several applications that will help you to learn how to use the library:
+* utils/aruco_print_marker: which creates marker and saves it in a jpg file you can print.
+* utils/aruco_print_dictionary: saves to a dictionary all the markers of the dictionary indicated(ARUCO,APRILTAGS,ARTOOLKIT+,etc).
+* utils/aruco_print_dictionary: saves to a dictionary all the markers of the dictionary indicated(ARUCO,APRILTAGS,ARTOOLKIT+,etc).
+* utils/aruco_simple : simple test aplication that detects the markers in an image
+* utils/aruco_test: this is the main application for detection. It reads images either from the camera of from a video and detect markers. Additionally, if you provide the intrinsics of the camera(obtained by OpenCv calibration) and the size of the marker in meters, the library calculates the marker intrinsics so that you can easily create your AR applications.
+* utils/aruco_tracker: example showing how to use the tracker. 
+* utils_markermap/aruco_create_markermap: creation of simple marker maps (the old boards). It creates a grid of markers that can be printed in a piece of paper.
 	The result of this program are two files (.png and .yml) The png file is an image of the marker you can print. The .yml file is the configuration file that you'll need to pass to the rest of the programs, so they know how the map is.  The .yml contains the location of the markers in pixels. Since we do not know in advance how large the printed marker will be, we use pixels here. However, in order to obtain the camera, w need to know the real size of the marker. For this pourpose, you can either use the program  utils_markermap/aruco_markermap_pix2meters, that creates a new .yml, with the map information in meters. Alternatively, all the test programs allows you to indicate the markersize in the command line. 
- 
- -# utils_markermap/aruco_markermap_pix2meters converts a markermap configuration file from pixels to meters
- -# utils_markermap/aruco_simple_markermap : simple example showing how to determine the camera pose using the marker maps
- -# utils_markermap/aruco_test_markermap : a bit more elaborated example showing how to determine the camera pose using the marker maps
+
+* utils_markermap/aruco_markermap_pix2meters converts a markermap configuration file from pixels to meters
+* utils_markermap/aruco_simple_markermap : simple example showing how to determine the camera pose using the marker maps
+* utils_markermap/aruco_test_markermap : a bit more elaborated example showing how to determine the camera pose using the marker maps
  
   
- -# utils_calibration/aruco_calibration : a program to calibrate a camera using a chessboard comprised by aruco markers. In this directory you can find the printable calibration board aruco_calibration_board_a4.pdf. It is a marker map, whose definition is in aruco_calibration_board_a4.yml. However, it is hardcoded in the program so you do not even need to pass it as a parameter.
- -# utils_calibration/aruco_calibration_fromimages the same as above, but from images saved in a file
+* utils_calibration/aruco_calibration : a program to calibrate a camera using a chessboard comprised by aruco markers. In this directory you can find the printable calibration board aruco_calibration_board_a4.pdf. It is a marker map, whose definition is in aruco_calibration_board_a4.yml. However, it is hardcoded in the program so you do not even need to pass it as a parameter.
+* utils_calibration/aruco_calibration_fromimages the same as above, but from images saved in a file
 
- -# utils_gl/aruco_test_gl simple example showing how to combine aruco with OpenGL
+* utils_gl/aruco_test_gl simple example showing how to combine aruco with OpenGL
  
- NOTE ON OPENGL: The library supports  the integration with OpenGL. In order to compile with support for OpenGL, you just have  installed in your system the develop packages for GL and glut (or freeglut).
- 
+__NOTE ON OPENGL:__ The library supports  the integration with OpenGL. In order to compile with support for OpenGL, you just have  installed in your system the develop packages for GL and glut (or freeglut).
 
 
-\section TIPS
+
+## TIPS
 
 You an increase speed by reducing the image size. If you do so, call CameraParameters::resize so that they adapt properly.
 
-\section Robust Detection
+## Robust Detection
 
-\subsection Threshold parameters
+### Threshold parameters
 By default, the MarkerDetector process the image to detect rectangles. Then, rectangles are examined to see if they are markers or not.
 
 Due to illumination issues, rectangles might not be detected. The process involved in detecting rectangles is regulated by a set of variables MarkerDetector::Params you can work with to
@@ -151,7 +148,7 @@ By default it is set to 0, but if you find dificulties you can increase its valu
 To set or get the parameters, use the member functions MarkerDetector::getParams() and MarkerDetector::setParams()
 
 
-\section Marker Size
+## Marker Size
 
 Another important parameter that conditions the detection is the size of the analyzed squares. After detecting squares, we reject these not falling in a certain size limit. This is  specified by the variables MarkerDetector::Params::_minSize and MarkerDetector::Params::_maxSize.
 
