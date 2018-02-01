@@ -48,11 +48,16 @@ With respect to performance, we have improved in several aspects. First, all mar
 
 Use cmake.
 
-In linux: (cd path;mkdir build;cd build cmake ..;make -j4;)
+### Linux
+* Go to the repository
+* Create a _build_ folder
+* Go to the _build_ folder
+* Configure and generate the project: __cmake ..__
+* Build the project: __make -j6__
+* Install the project: __sudo make install__
 
-In windows, use cmake-gui, or QtCreator if you have not a lot of experience.
-
-Set the -DOPENCV_DIR variable pointing to the directory where it is.
+### Windows
+Use cmake-gui, or QtCreator if you have not a lot of experience. Set the -DOPENCV_DIR variable pointing to the directory where it is.
 
 To consider:
 	-DUSE_OWN_EIGEN3=ON/OFF  : We need the eigen3 library. So we have a copy of it in 3drparty. However, if you prefer to use yours, set this parameter to OFF
